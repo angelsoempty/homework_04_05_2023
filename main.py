@@ -1,13 +1,25 @@
-def log_decorator(func):
-    def wrapper(celsius):
-        result = func(celsius)
-        print(f"Перетворення температури: {celsius}C -> {result}F")
+import time
+def timeit_decorator(func):
+    def wrapper(number):
+        start_time = time.time()
+        result = func(number)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"Час виконання функції: {execution_time} секунд")
         return result
     return wrapper
+@timeit_decorator
+def is_prime(number):
+    if number < 2:
+        return False
+    for i in range(2, int(number**0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
 
-@log_decorator
-def celsius_to_fahrenheit(celsius):
-    return (celsius * 9/5) + 32
-temperature_celsius = 25
-temperature_fahrenheit = celsius_to_fahrenheit(temperature_celsius)
-print(f"Температура {temperature_celsius}C дорівнює {temperature_fahrenheit}F")
+num = 37
+is_prime_num = is_prime(num)
+if is_prime_num:
+    print(f"Число {num} є простим")
+else:
+    print(f"Число {num} не є простим")
