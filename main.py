@@ -1,25 +1,16 @@
-import time
+def increase_result_by_100(func):
+    def wrapper(numbers):
+        result = func(numbers)
+        return result + 100
+    return wrapper
 
-def limit_rate(max_calls, time_period):
-    def decorator(func):
-        call_times = []
-        def wrapper(*args, **kwargs):
-            current_time = time.time()
-            call_times[:] = [t for t in call_times if t >= current_time - time_period]
-            if len(call_times) < max_calls:
-                call_times.append(current_time)
-                return func(*args, **kwargs)
-            else:
-                print(f"Ліміт кількості викликів ({max_calls}) за проміжок часу ({time_period} секунд) вичерпано.")
-        return wrapper
-    return decorator
+@increase_result_by_100
+def multiply_numbers(numbers):
+    result = 1
+    for num in numbers:
+        result *= num
+    return result
 
-@limit_rate(max_calls=3, time_period=10)
-def my_function():
-    print("Ця функція може бути викликана не більше 3 разів протягом 10 секунд.")
-
-my_function()
-time.sleep(2)
-my_function()
-my_function()
-my_function()
+numbers_list = [1, 2, 3]
+result = multiply_numbers(numbers_list)
+print(f"Добуток чисел {numbers_list} збільшений на 100: {result}")
